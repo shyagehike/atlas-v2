@@ -1,0 +1,17 @@
+ipykernel
+pandas
+geopandas
+matplotlib
+seaborn
+numpy
+ee
+geemap
+setuptools
+earthengine-api
+pyrosm
+openpyxl
+timezonefinder
+scikit-learn
+tensorflow
+python-dotenv
+tqdm
