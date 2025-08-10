@@ -15,3 +15,4 @@ scikit-learn
 tensorflow
 python-dotenv
 tqdm
+-e ./featuretoolkit
