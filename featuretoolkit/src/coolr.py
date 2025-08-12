@@ -38,15 +38,17 @@ def coolr_loc_map(dataframe:pd.DataFrame):
 
 def coolr_time_column(dataframe:pd.DataFrame):
     dF=dataframe.copy()
+    mask_unknown=~dF['event_time'].astype(str).str.contains(r'^\s*\d{1,2}:\d{2}\s*[APap]M\s*$',na=False) # masking to flag non-time strings (ie. unknown/nan)
+    dF.loc[mask_unknown,'event_time']='12:00 AM' # set it to a default of 12:00AM (safe, wont interfere)
     dates=[datestring.split(' ')[0] for datestring in dF['event_date']]
-    dF['event_time']=dF['event_time'].str.replace(r'^(\d):', r'0\1:', regex=True)
+    dF['event_time']=dF['event_time'].str.replace(r'^(\d):',r'0\1:',regex=True)
     times=[
     f"{(int(t.split()[0].split(':')[0])%12+(12 if 'PM' in t.upper() else 0)):02d}"
     f":{t.split()[0].split(':')[1].zfill(2)}"
     for t in dF['event_time']]
 
     dF.insert(0,'time_start',[1000*dt.datetime.combine(dt.datetime.strptime(date.split(' ')[0],'%m/%d/%Y'),dt.time.fromisoformat(time)).replace(tzinfo=dt.timezone.utc).timestamp() for date,time in zip(dates,times)])
-    dF.insert(1,'time_end',dF['time_start']) # time_start=time_end because exact times are specified. for gfld, the timedelta between start and end would be a day since only date is specified, not time
+    dF.insert(1,'time_end',dF['time_start']+mask_unknown.astype('int64')*(24*60*60*1000)) # time_start=time_end because exact times are specified. for gfld (and some coolr points w/ unknown time), the timedelta between start and end would be a day since only date is specified, not time
     dF.drop(['event_time','event_date'],axis=1,inplace=True)
     
     return dF

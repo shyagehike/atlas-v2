@@ -20,6 +20,8 @@ from .gfld import (
 
 # shared utilities
 from .common import (
+    haversine_dist,
+    deduplicate,
     set_regions,
     add_index,
     concatenate,
@@ -41,6 +43,8 @@ __all__ = [
     "gfld_rename",
     "process_gfld",
     # common
+    "haversine_dist",
+    "deduplicate",
     "set_regions",
     "add_index",
     "concatenate",
