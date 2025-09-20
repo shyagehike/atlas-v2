@@ -46,7 +46,7 @@ def deduplicate(coolr:pd.DataFrame,gfld:pd.DataFrame):
     # ie. they could be describing the same event according to spatial uncertainty value
     # this filters out events that coincidentally happened on the same day in totally different locations
     cand["distance_m"]=haversine_dist(cand["latitude_center_coolr"],cand["longitude_center_coolr"],cand["latitude_center_gfld"],cand["longitude_center_gfld"])
-    cand["threshold_m"]=cand["_rad_m_coolr"] + cand["_rad_m_gfld"]
+    cand["threshold_m"]=cand["_rad_m_coolr"]+cand["_rad_m_gfld"]
     cand=cand[cand["distance_m"]<=cand["threshold_m"]].copy()
     if cand.empty:return coolr.copy(),gfld.copy(),pd.DataFrame(columns=["coolr_id","gfld_id","date","distance_m","coolr_rad_m","gfld_rad_m","time_start_coolr","time_end_coolr","time_start_gfld","time_end_gfld"])
     cand.sort_values(by=["coolr_id","distance_m","_rad_m_gfld","time_start_gfld"],ascending=[True,True,True,True],inplace=True)

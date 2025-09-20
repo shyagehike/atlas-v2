@@ -1,0 +1,23 @@
+main:
+  seed: 42
+  
+sampling:
+  crs: "EPSG:3857"
+  scale: 30 # 30 meters
+  t_buffer: 600000 # 10 minutes
+  K_max_events: 128
+  t_multiplier: 4
+
+features:
+  soil_moist_mean_layers:
+    1: "0-7cm"
+    4: "100-289cm"
+  windows:
+    precip_sum_h: [1,6,24,72,240,720]
+    precip_max_h: [6,12,24]
+    precip_hits_h: [72]
+    soil_moist_mean_h: [24,72]
+    soil_moist_anom_d: [7,90]
+    soil_moist_trend_d: [7,90]
+    pev_sum_d: 7 # also applies for moisture deficit
+    ndvi_anom_d: 96
