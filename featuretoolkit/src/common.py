@@ -108,12 +108,16 @@ def add_index(dataframe:pd.DataFrame):
     return dF
 
 # also, the concatenate function deduplicates matching data using the above functions
-def concatenate(coolr:pd.DataFrame,gfld:pd.DataFrame):
+def concatenate(coolr:pd.DataFrame,gfld:pd.DataFrame,tsmin:float=None,tsmax:float=None,keys:bool=True):
     # also now time to assign regions for blocked CV
     coolr,gfld,matches=deduplicate(coolr,gfld)
-    dF=set_regions(pd.concat([coolr,gfld]).reset_index(drop=True))
+    dF=pd.concat([coolr,gfld]).reset_index(drop=True)
     s=pd.to_numeric(dF['spatial_uncertainty'],errors='coerce')
     mask=s.le(np.nanpercentile(s.to_numpy(),90))&s.notna() # mask out highest 10% of points by uncertainty because there are genuinely some outliers that skew the dataset by an unreasonable amount (see figures somewhere)
-    dF['spatial_uncertainty']=dF['spatial_uncertainty']/1000 # converting spatial uncertainty radii from m to km for stability
-    return add_index(dF[mask].reset_index(drop=True)),matches
-    # the matches only entail points dropped due to duplicate, not high uncertainty
+    dF['spatial_uncertainty']=dF['spatial_uncertainty']/1000 # converting spatial uncertainty radii from m to km for stability and whatever
+    if keys:dF['key']=np.ones(len(dF)) # optional key encoding (1=positive, 0=background)
+    dF=dF[mask].reset_index(drop=True)
+    if tsmin!=None:dF=dF[dF['time_start']>=tsmin] # filter out everything below min timestamp
+    if tsmax!=None:dF=dF[dF['time_end']<=tsmax] # filter out everything above max timestamp
+    return dF,matches
+    # matches only contains points dropped due to being duplicates, not due to high uncertainty or other filters

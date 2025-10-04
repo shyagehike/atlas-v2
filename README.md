@@ -28,4 +28,6 @@ see:
 - https://www.thestatesman.com/world/135-killed-over-20k-displaced-in-recent-flooding-landslides-in-rwanda-1503181246.html
 - https://www.bbc.com/news/world-africa-65469374
 
+output.csv download: https://drive.google.com/file/d/1LHoyW4h6bSmQYTfgc7T7Ey5UXbvS9Q4p/view?usp=sharing
+
 this repository is currently private.

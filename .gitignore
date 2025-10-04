@@ -34,3 +34,5 @@ Thumbs.db
 *.log
 *.tmp
 *.out
+logs.jsonl
+output.csv

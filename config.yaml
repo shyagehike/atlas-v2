@@ -1,23 +1,47 @@
-main:
-  seed: 42
-  
+seed: 42
+threads: 24 # max threads
+transient_attempts: 10 # max number of attempts IF error is transient
+persistent_attempts: 3 # max number of attempts IF error isn't transient
+transient_delay: 1 # sleep time in between retries for transient errors 
+progress_readout: 15 # num. seconds between progress readouts for ETA calculation
+transient_keys: ["429","quota","concurrent","concurrency","deadline exceeded","temporarily unavailable","503","500","backend","socket","connection reset","too many concurrent","rate limit","memory"]
+
+path:
+  output: "database/outputs/output.csv" # must be csv
+  logs: "database/outputs/logs.jsonl" # must be jsonl
+
 sampling:
-  crs: "EPSG:3857"
-  scale: 30 # 30 meters
-  t_buffer: 600000 # 10 minutes
-  K_max_events: 128
-  t_multiplier: 4
+  scale: 30 # meters
+  K_max_events: 512
+  lambda_r: 0.8
+  lambda_t: 0.2
+  unmask_val: -99 # default value for unmasking pixels
 
 features:
-  soil_moist_mean_layers:
-    1: "0-7cm"
-    4: "100-289cm"
-  windows:
+  vsw_levels: [1,4]
+  vsw_labels: ["0-7cm","100-289cm"]
+  tileScale: 2
+  dynamic:
     precip_sum_h: [1,6,24,72,240,720]
     precip_max_h: [6,12,24]
     precip_hits_h: [72]
+    runoff_h: [1,6,24,72] # both surface & subsurface
     soil_moist_mean_h: [24,72]
     soil_moist_anom_d: [7,90]
     soil_moist_trend_d: [7,90]
     pev_sum_d: 7 # also applies for moisture deficit
+    snow_h: [1,6,24]
+  static:
+    sc_depths: ['b0','b10','b100','b200']
+    vwc_depths: ['0_5cm','100_200cm']
+    vwc_quantile: "mean"
     ndvi_anom_d: 96
+
+background:
+  sampling_ratio: 400 # X bg subsamples for every 1 positive sample
+  uncertainty_radius: 20 # (km) spatial radius of uncertainty region for background samples
+  uncertainty_interval: 0 # (ms) spatial 
+  gsw_threshold: 80 # threshold for masking (elimination) based on % surface LAND occurence
+  buffer_radius: 500000 # (m)
+  area_threshold: 1000 # (sq km)
+  max_error: 30000 # (m)
