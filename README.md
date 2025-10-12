@@ -19,7 +19,6 @@ current landslide prediction systems often fail or have limited utility in real-
 3. uncertainty-aware training (first landslide model to handle coordinate uncertainties, enables the use of more training data previously considered "unusable")
 4. multi-resolution fusion (allows the elegant combination of data at different spatial resolutions without information loss)
 
-
 in 2023, i witnessed the aftermath of heavy rains in Rwanda that triggered flooding and landslides in northwestern rwanda, destroying nearly 6 thousand homes (damaging 2.5 thousand extra), 26 bridges, over a dozen roads, a dozen power stations, eight water treatment plants, five health centers, and a hospital.
 130 people died as well as thousands of livestock.
 these historically unusual rainfall patterns can largely be attributed to climate change, according to rwanda's local weather authority
@@ -28,6 +27,6 @@ see:
 - https://www.thestatesman.com/world/135-killed-over-20k-displaced-in-recent-flooding-landslides-in-rwanda-1503181246.html
 - https://www.bbc.com/news/world-africa-65469374
 
-output.csv download: https://drive.google.com/file/d/1LHoyW4h6bSmQYTfgc7T7Ey5UXbvS9Q4p/view?usp=sharing
+output.csv/main.csv downloads: https://drive.google.com/drive/folders/1jUbqnbn_2SpEdACm7KCuOAGVMVHU96oE?usp=drive_link
 
 this repository is currently private.

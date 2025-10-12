@@ -1,4 +1,4 @@
-# featuretoolkit v0.3.1
+# featuretoolkit v0.4.0
 
 simple utilities for cleaning, harmonizing, and region-blocking landslide event data. 
 designed around two common sources:

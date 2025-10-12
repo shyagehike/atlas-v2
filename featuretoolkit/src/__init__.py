@@ -27,6 +27,16 @@ from .common import (
     concatenate,
 )
 
+# transformation utilities
+from .transform import (
+    normalize,
+    transform_with_spec,
+    inverse_transform_with_spec,
+    save_spec,
+    load_spec,
+    transform_full,
+)
+
 __all__ = [
     # coolr
     "coolr_filter",
@@ -48,4 +58,11 @@ __all__ = [
     "set_regions",
     "add_index",
     "concatenate",
+    # transform
+    "normalize",
+    "transform_with_spec",
+    "inverse_transform_with_spec",
+    "save_spec",
+    "load_spec",
+    "transform_full",
 ]
