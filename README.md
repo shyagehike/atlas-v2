@@ -67,5 +67,4 @@ see:
 for technical details on the model and methodology, see the "model architecture & training" section of the model.ipynb notebook
 output.csv, main.csv, pca.csv, & models/ downloads: https://drive.google.com/drive/folders/1jUbqnbn_2SpEdACm7KCuOAGVMVHU96oE?usp=drive_link (all belong in database/outputs)
 
-
-this repository is currently private.
+Copyright (c) 2025 shyagehike
