@@ -55,6 +55,8 @@ Global mapping of volumetric water retention at 100, 330 and 15000 cm suction us
 11. JRC Global Surface Water Mapping Layers (for masking) (courtesy of EE JRC / Google via GEE)
 Jean-Francois Pekel, Andrew Cottam, Noel Gorelick, Alan S. Belward, High-resolution mapping of global surface water and its long-term changes. Nature 540, 418-422 (2016). (doi:10.1038/nature20584)
 
+## extra
+
 in 2023, i witnessed the aftermath of heavy rains in Rwanda that triggered flooding and landslides in northwestern rwanda, destroying nearly 6 thousand homes (damaging 2.5 thousand extra), 26 bridges, over a dozen roads, a dozen power stations, eight water treatment plants, five health centers, and a hospital.
 130 people died as well as thousands of livestock.
 these historically unusual rainfall patterns can largely be attributed to climate change, according to rwanda's local weather authority
@@ -67,5 +69,4 @@ see:
 for technical details on the model and methodology, see the "model architecture & training" section of the model.ipynb notebook
 output.csv, main.csv, pca.csv, & models/ downloads: https://drive.google.com/drive/folders/1jUbqnbn_2SpEdACm7KCuOAGVMVHU96oE?usp=drive_link (all belong in database/outputs)
 
-
-this repository is currently private.
+Copyright (c) 2025 shyagehike
