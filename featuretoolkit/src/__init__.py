@@ -30,8 +30,8 @@ from .common import (
 # transformation utilities
 from .transform import (
     normalize,
-    transform_with_spec,
-    inverse_transform_with_spec,
+    transform_spec,
+    inverse_transform_spec,
     save_spec,
     load_spec,
     transform_full,
@@ -60,8 +60,8 @@ __all__ = [
     "concatenate",
     # transform
     "normalize",
-    "transform_with_spec",
-    "inverse_transform_with_spec",
+    "transform_spec",
+    "inverse_transform_spec",
     "save_spec",
     "load_spec",
     "transform_full",
