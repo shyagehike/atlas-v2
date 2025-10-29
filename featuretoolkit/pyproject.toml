@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "featuretoolkit"
-version = "0.4.0"
+version = "0.4.2"
 description = "simple data cleaning and region blocking utilities for landslide event datasets (COOLR, GFLD)"
 readme = "README.md"
 requires-python = ">=3.12"

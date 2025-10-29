@@ -1,6 +1,26 @@
 seed: 42
 
-model: "under construction"
+model:
+  split_ratio: [0.75,0.15,0.10] # train, val, test
+  folds: 8 # number of folds to create
+  path:
+    pca: 'database/outputs/pca.csv' # must be csv (PCA transformed features)
+    pca_persist: 'database/records/pca.joblib' # must be joblib (persisted PCA model)
+    models: 'database/models/' # directory to save trained models
+  hyperparameters:
+    "batch_size": 16384
+    "rff_dim": 128
+    "rff_gamma": 0.05
+    "epochs": 400
+    "learning_rate": 1e-4
+    "grad_clip": 1.0
+    "mu_clip": (-20, 10) # this should automatically convert into a tuple - dont worry
+    "patience": 10
+    "plateau_patience": 5
+    "min_lr": 1e-6
+    "l2": 1e-3
+    "weight_decay": 1e-4
+    "min_delta": 5e-2
 
 features:
   threads: 24 # max threads
@@ -12,9 +32,9 @@ features:
 
   path:
     main: "database/outputs/main.csv" # must be csv (final output)
-    spec: "database/outputs/spec.json" # must be json (transformation specs)
+    spec: "database/records/spec.json" # must be json (transformation specs)
     output: "database/outputs/output.csv" # must be csv (intermediate output, pre-transformations)
-    logs: "database/outputs/logs.jsonl" # must be jsonl (output processing logs for debugging)
+    logs: "database/records/logs.jsonl" # must be jsonl (output processing logs for debugging)
 
   sampling:
     scale: 30 # meters

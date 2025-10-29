@@ -81,18 +81,21 @@ def _apply_steps_inverse(y,steps): # APPROXIMATE INVERSE (some steps are lossy l
 
 # fitting normalization for all columns in df
 # meta columns are left as identity
-def normalize(dF:pd.DataFrame,meta:list[str],exclude=dict):
+def normalize(dF:pd.DataFrame,meta:list[str],exclude=None):
     dF=dF.copy()
     meta=set(meta or []) # meta columns (non-quantiative)
+    exclude=set(exclude or []) # excluded columns (quantitative but not to be transformed)
     spec={'version':'v3_exact','columns':{}} # initialize spec dict
 
     # itrate through all columns
     for col in dF.columns:
-        steps=[]
-        post={'kind':'none'}
+        steps=[];post={'kind':'none'}
         # dropout checks (meta, all-nan, all-nonfinite, all-constant)
-        if col in meta or col in exclude:
-            spec['columns'][col]={'steps':[{'kind':'identity'}],'post':post}
+        if col in meta:
+            spec['columns'][col]={'steps':[{'kind':'identity'}],'post':post,'meta':True}
+            continue
+        if col in exclude:
+            spec['columns'][col]={'steps':[{'kind':'identity'}],'post':post,'meta':False}
             continue
         x=pd.to_numeric(dF[col],errors='coerce').astype(float)
         if x.isna().all():
@@ -169,49 +172,37 @@ def normalize(dF:pd.DataFrame,meta:list[str],exclude=dict):
         # post-pass scaling to ensure everything is in [0,1] range if possible or [-1,1]
         y_now=_apply_steps_forward(x.values,steps) # apply current steps to see where we are
         xf2=_finite(y_now) # finite values only
-        if xf2.size>0:
-            mn,mx=float(np.nanmin(xf2)),float(np.nanmax(xf2)) 
-            eps2=1e-9 
-            if not (mn >=-eps2 and mx <=1+eps2):
-                if mn >=0:
-                    rng=mx-mn
-                    if rng <=0:rng=1
-                    post={'kind':'post_minmax01','a':mn,'b':mx}
-                elif mn<0 and mx>0:
-                    mabs=max(abs(mn),abs(mx))
-                    if mabs <=0:mabs=1
-                    post={'kind':'post_sym','mabs':mabs}
-                else:post={'kind':'none'}
+        mu=float(np.nanmean(xf2)) if xf2.size>0 else 0
+        sigma=float(np.nanstd(xf2)) if xf2.size>0 else 1 # sigma
+        if not np.isfinite(sigma) or sigma==0:sigma=1
+        if not np.isfinite(mu):mu=0
+        post={'kind':'post_zscore','mu':mu,'sigma':sigma}
         spec['columns'][col]={'steps':steps,'post':post} # add to spec
     return spec
 
 # applying & inverting normalization based on spec
-def transform_with_spec(dF:pd.DataFrame,spec:dict):
+def transform_spec(dF:pd.DataFrame,spec:dict):
     out=dF.copy()
     for col,cfg in spec['columns'].items():
         if col not in out.columns:continue
+        if cfg.get('meta',False):continue
         y=_apply_steps_forward(out[col].values,cfg['steps'])
         post=cfg.get('post',{'kind':'none'})
-        if post['kind']=='post_minmax01':
-            a,b=float(post['a']),float(post['b'])
-            if b>a:y=(y-a)/(b-a)
-        elif post['kind']=='post_sym':
-            mabs=float(post['mabs'])
-            if mabs>0:y=(y/mabs).clip(-1,1)
+        if post['kind']=='post_zscore':
+            mu=float(post['mu']);sigma=float(post['sigma']) or 1
+            y=(y-mu)/sigma
         out[col]=y
     return out
-def inverse_transform_with_spec(dF:pd.DataFrame,spec:dict):
+def inverse_transform_spec(dF:pd.DataFrame,spec:dict):
     out=dF.copy()
     for col,cfg in spec['columns'].items():
         if col not in out.columns:continue
+        if cfg.get('meta',False):continue
         y=np.asarray(pd.to_numeric(out[col],errors='coerce'),float)
         post=cfg.get('post',{'kind':'none'})
-        if post['kind']=='post_minmax01':
-            a,b=float(post['a']),float(post['b'])
-            y=y*(b-a)+a
-        elif post['kind']=='post_sym':
-            mabs=float(post['mabs'])
-            y=y*mabs
+        if post['kind']=='post_zscore':
+            mu=float(post['mu']);sigma=float(post['sigma']) or 1
+            y=y*sigma+mu
         out[col]=_apply_steps_inverse(y,cfg['steps'])
     return out
 
@@ -225,4 +216,4 @@ def load_spec(path:str):
 def transform_full(dF:pd.DataFrame,meta:list,exclude:dict,spec_path:str=None):
     spec=normalize(dF,meta,exclude)
     if spec_path!=None:save_spec(spec,spec_path)
-    return transform_with_spec(dF,spec),spec
+    return transform_spec(dF,spec),spec
