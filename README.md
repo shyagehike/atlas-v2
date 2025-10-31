@@ -1,25 +1,24 @@
-# global landslide prediction with physics-informed neural network
-developing an early warning system to save lives in East Africa and beyond
+# ATLAS v2 - Global Landslide Prediction with a Random Fourier Features + Log-Gaussian Cox Process Model
+An open-source early-warning framework for near-real-time landslide risk prediction to prevent landslide fatalities around the world 
 
-## mission
-every year, landslides kill over 4,500 people globally, with developing nations bearing a large fraction of casualties despite having the fewest resources for prediction, prevention, and relief.
-this project develops a physics-informed, temporally-aware AI model that can predict landslides at an hourly cadence using limited data, specifically designed for deployment in resource-constrainted regions of the world (namely, east africa)
+## The Problem(s)
+Every year, landslides kill over 4,500 people globally, with developing nations bearing a large fraction of casualties despite having the fewest resources for prediction, prevention, and relief.
+This project develops an RFF LGCP model that can predict landslides at an hourly cadence using limited data, specifically designed for deployment in resource-constrainted regions of the world (namely, sub-Saharan Africa)
 
-## problem
-current landslide prediction systems often fail or have limited utility in real-world deployment because they:
+Current landslide prediction systems often fail or have limited utility in real-world deployment because they:
 - require massive amounts of high-quality data, which doesn't exist in vulnerable regions
 - ignore temporal effects that can accumulate over weeks
 - can't handle uncertain or missing location data
 - need heavy computational resources to run
 - generate too many false alarms, causing warning fatigue
 
-## key innovations
-1. continuous spatial probability fields (dropped a grid based approach in favor of modeling landslide risk as a continuous probabilistic distribution through log-gaussian cox processes), saving parameters and allowing us to query risk at any location
-2. physics informed temporal modeling
-3. uncertainty-aware training (first landslide model to handle coordinate uncertainties, enables the use of more training data previously considered "unusable")
-4. multi-resolution fusion (allows the elegant combination of data at different spatial resolutions without information loss)
+## Key innovations
+1. Continuous Spatial Probability Fields (dropped a grid based approach in favor of modeling landslide risk as a continuous probabilistic distribution through log-gaussian cox processes parametrized via RFFs, saving parameters and allowing us to query risk at any location)
+3. Uncertainty-Aware Training (the model explicitly accounts for coordinate, labeling, & temporal uncertainties by weighting certain samples rather than discarding them, expanding usable training data and improving redundancy to real-world noise)
+4. Multi-Resolution Fusion (allows the elegant combination of data at different spatial resolutions without information loss (resolution invariance))
+5. Computational Efficiency & Transparency (training completes in under 8 hours on standard hardware; localized inference runs in under a minute + all data sources are open and freely accessible via primarily Google Earth Engine)
 
-## citations
+## Citations
 1. Cooperative Open Online Landslide Repository (COOLR):
 Kirschbaum, D.B., Stanley, T., & Zhou, Y. (2015). Spatial and temporal analysis of a global landslide catalog. Geomorphology, 249, 4-15. doi:10.1016/j.geomorph.2015.03.016
 Kirschbaum, D.B., Adler, R., Hong, Y., Hill, S., & Lerner-Lam, A. (2010). A global landslide catalog for hazard applications: method, results, and limitations. Natural Hazards, 52, 561-575. doi:10.1007/s11069-009-9401-4
@@ -55,18 +54,15 @@ Global mapping of volumetric water retention at 100, 330 and 15000 cm suction us
 11. JRC Global Surface Water Mapping Layers (for masking) (courtesy of EE JRC / Google via GEE)
 Jean-Francois Pekel, Andrew Cottam, Noel Gorelick, Alan S. Belward, High-resolution mapping of global surface water and its long-term changes. Nature 540, 418-422 (2016). (doi:10.1038/nature20584)
 
-## extra
+## Extra Notes
 
-in 2023, i witnessed the aftermath of heavy rains in Rwanda that triggered flooding and landslides in northwestern rwanda, destroying nearly 6 thousand homes (damaging 2.5 thousand extra), 26 bridges, over a dozen roads, a dozen power stations, eight water treatment plants, five health centers, and a hospital.
-130 people died as well as thousands of livestock.
-these historically unusual rainfall patterns can largely be attributed to climate change, according to rwanda's local weather authority
-see:
+In 2023, I witnessed the aftermath of heavy rains in East Africa that triggered flooding and landslides in Northwestern Rwanda, among other places, destroying nearly 6 thousand homes (damaging 2.5 thousand extra), 26 bridges, over a dozen roads, a dozen power stations, eight water treatment plants, five health centers, and a hospital. 130 people died as well as thousands of livestock. These historically unusual rainfall patterns can largely be attributed to climate change, according to Rwanda's local weather authority. See:
 - https://www.usnews.com/news/world/articles/2023-05-04/rwanda-floods-kill-130-destroy-over-5-000-houses
 - https://www.thestatesman.com/world/135-killed-over-20k-displaced-in-recent-flooding-landslides-in-rwanda-1503181246.html
 - https://www.bbc.com/news/world-africa-65469374
 
 
-for technical details on the model and methodology, see the "model architecture & training" section of the model.ipynb notebook
+For technical details on the model and methodology, see the "Model Architecture & Training" section of the model.ipynb notebook (https://github.com/shyagehike/atlas-v2/blob/main/model.ipynb).
 output.csv, main.csv, pca.csv, & models/ downloads: https://drive.google.com/drive/folders/1jUbqnbn_2SpEdACm7KCuOAGVMVHU96oE?usp=drive_link (all belong in database/outputs)
 
 Copyright (c) 2025 shyagehike
