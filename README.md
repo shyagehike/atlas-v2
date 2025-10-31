@@ -12,7 +12,7 @@ Current landslide prediction systems often fail or have limited utility in real-
 - need heavy computational resources to run
 - generate too many false alarms, causing warning fatigue
 
-## Key innovations
+## Key Innovations
 1. Continuous Spatial Probability Fields (dropped a grid based approach in favor of modeling landslide risk as a continuous probabilistic distribution through log-gaussian cox processes parametrized via RFFs, saving parameters and allowing us to query risk at any location)
 3. Uncertainty-Aware Training (the model explicitly accounts for coordinate, labeling, & temporal uncertainties by weighting certain samples rather than discarding them, expanding usable training data and improving redundancy to real-world noise)
 4. Multi-Resolution Fusion (allows the elegant combination of data at different spatial resolutions without information loss (resolution invariance))
