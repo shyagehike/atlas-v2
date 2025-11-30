@@ -3,7 +3,7 @@ An open-source early-warning framework for near-real-time landslide risk predict
 
 ## The Problem(s)
 Every year, landslides kill over 4,500 people globally, with developing nations bearing a large fraction of casualties despite having the fewest resources for prediction, prevention, and relief.
-This project develops an RFF LGCP model that can predict landslides at an hourly cadence using limited data, specifically designed for deployment in resource-constrainted regions of the world (namely, sub-Saharan Africa)
+This project develops an RFF LGCP model that can predict landslides at an hourly cadence using limited data, specifically designed for deployment in resource-constrained regions of the world (namely, sub-Saharan Africa)
 
 Current landslide prediction systems often fail or have limited utility in real-world deployment because they:
 - require massive amounts of high-quality data, which doesn't exist in vulnerable regions
